@@ -1,91 +1,122 @@
-import React from 'react';
-import { View, ImageBackground, Text, FlatList } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
-import { Fontisto } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { RectButton } from 'react-native-gesture-handler';
+import { View, Text, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
 import { Background } from '../../components/Background';
-import { ListHeader } from '../../components/ListHeader';
-import { ListDivider } from '../../components/ListDivider';
-import { ButtonIcon } from '../../components/ButtonIcon';
+import { CategorySelect } from '../../components/CategorySelect';
 import { Header } from '../../components/Header';
-import { Member } from '../../components/Member';
+import { GuildIcon } from '../../components/GuildIcon';
+import { SmallInput } from '../../components/SmallInput';
+import { TextArea } from '../../components/TextArea';
+import { Button } from '../../components/Button';
 
-import BannerImg from '../../assets/banner.png'
 import { styles } from './styles';
 import { theme } from '../../global/styles/theme';
 
 export function AppointmentCreate() {
-  const members = [
-    {
-      id: '1',
-      username: 'Pedro',
-      avatar_url: 'https://github.com/peedroca.png',
-      status: 'online'
-    },
-    {
-      id: '2',
-      username: 'Pedro',
-      avatar_url: 'https://github.com/peedroca.png',
-      status: 'offline'
-    },
-    {
-      id: '3',
-      username: 'Pedro',
-      avatar_url: 'https://github.com/peedroca.png',
-      status: 'offline'
-    }
-  ]
+  const [category, setCategory] = useState('');
 
   return (
-    <Background>
-      <Header
-        title="Detalhes"
-        action={
-          <BorderlessButton>
-            <Fontisto
-              name="share"
-              size={24}
-              color={theme.colors.primary}
-            />
-          </BorderlessButton>
-        }
-      />
-
-      <ImageBackground
-        source={BannerImg}
-        style={styles.banner}
-      >
-        <View style={styles.bannerContent}>
-          <Text style={styles.title}>
-            Lendários
-          </Text>
-
-          <Text style={styles.subtitle}>
-            É hoje que vamos chegar ao challenger sem perder uma partida da md10
-          </Text>
-        </View>
-      </ImageBackground>
-
-      <ListHeader
-        title="Jogadores"
-        subtitle="Total 3"
-      />
-
-      <FlatList
-        style={styles.members}
-        data={members}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <Member data={item} />
-        )}
-        ItemSeparatorComponent={() => <ListDivider />}
-      />
-
-      <View style={styles.footer}>
-        <ButtonIcon
-          title="Entrar na partida"
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height' }
+      style={styles.container}
+    >
+      <ScrollView>
+        <Header
+          title="Agendar partida"
         />
-      </View>
-    </Background>
+
+        <Text style={[
+          styles.label,
+          { marginLeft: 24, marginTop: 36, marginBottom: 18 }
+        ]}>
+          Categoria
+        </Text>
+
+        <CategorySelect
+          setCategory={setCategory}
+          categorySelected={category}
+          hasCheckBox
+        />
+
+        <View style={styles.form}>
+          <RectButton>
+            <View style={styles.select}>
+              {
+                /*<View style={styles.image} />*/
+                <GuildIcon />
+              }
+
+              <View style={styles.selectBody}>
+                <Text style={styles.label}>
+                  Selecione um servidor
+                </Text>
+              </View>
+              <Feather
+                name="chevron-right"
+                color={theme.colors.heading}
+                size={18}
+              />
+            </View>
+          </RectButton>
+
+          <View style={styles.field}>
+            <View>
+              <Text style={styles.label}>
+                Dia e mês
+              </Text>
+
+              <View style={styles.column}>
+                <SmallInput maxLength={2} />
+                <Text style={styles.divider}>
+                  /
+                </Text>
+                <SmallInput maxLength={2} />
+              </View>
+            </View>
+
+            <View>
+              <Text style={styles.label}>
+                Hora e minuto
+              </Text>
+
+              <View style={styles.column}>
+                <SmallInput maxLength={2} />
+                <Text style={styles.divider}>
+                  :
+                </Text>
+                <SmallInput maxLength={2} />
+              </View>
+            </View>
+
+          </View>
+
+          <View style={[
+            styles.field,
+            { marginBottom: 12 }
+          ]}>
+            <Text style={styles.label}>
+              Descrição
+            </Text>
+
+            <Text style={styles.caracteresLimit}>
+              Max 100 caracteres
+            </Text>
+          </View>
+
+          <TextArea
+            multiline
+            maxLength={100}
+            numberOfLines={5}
+            autoCorrect={false}
+          />
+
+          <View style={styles.footer}>
+            <Button title="Agendar" />
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
