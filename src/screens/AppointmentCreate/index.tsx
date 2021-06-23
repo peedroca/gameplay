@@ -14,7 +14,7 @@ import BannerImg from '../../assets/banner.png'
 import { styles } from './styles';
 import { theme } from '../../global/styles/theme';
 
-export function AppointmentDetails() {
+export function AppointmentCreate() {
   const members = [
     {
       id: '1',
