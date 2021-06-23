@@ -23,13 +23,13 @@ export default function App() {
   }
 
   return (
-      <Background>
+    <Background>
       <StatusBar
-          barStyle="light-content"
-          backgroundColor="transparent"
-          translucent
-        />
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent
+      />
       <Routes />
-      </Background>
+    </Background>
   );
 }
